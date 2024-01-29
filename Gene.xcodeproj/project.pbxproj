@@ -7,66 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF38E1602B4923940035F4FB /* photoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */; };
+		AF38E1622B4D6A9E0035F4FB /* LoginViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E1612B4D6A9E0035F4FB /* LoginViewContoller.swift */; };
+		AF38E1642B4D6F630035F4FB /* signupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E1632B4D6F630035F4FB /* signupViewController.swift */; };
 		AFA431232B2C3D9300B1B376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431222B2C3D9300B1B376 /* AppDelegate.swift */; };
 		AFA431252B2C3D9300B1B376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431242B2C3D9300B1B376 /* SceneDelegate.swift */; };
-		AFA431272B2C3D9300B1B376 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431262B2C3D9300B1B376 /* ViewController.swift */; };
-		AFA4312A2B2C3D9300B1B376 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA431282B2C3D9300B1B376 /* Main.storyboard */; };
+		AFA431272B2C3D9300B1B376 /* cameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431262B2C3D9300B1B376 /* cameraViewController.swift */; };
 		AFA4312C2B2C3D9400B1B376 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFA4312B2B2C3D9400B1B376 /* Assets.xcassets */; };
 		AFA4312F2B2C3D9400B1B376 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AFA4312D2B2C3D9400B1B376 /* LaunchScreen.storyboard */; };
-		AFA4313A2B2C3D9400B1B376 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431392B2C3D9400B1B376 /* GeneTests.swift */; };
-		AFA431442B2C3D9400B1B376 /* GeneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431432B2C3D9400B1B376 /* GeneUITests.swift */; };
-		AFA431462B2C3D9400B1B376 /* GeneUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431452B2C3D9400B1B376 /* GeneUITestsLaunchTests.swift */; };
+		AFA431532B2C3FAF00B1B376 /* homePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431522B2C3FAF00B1B376 /* homePageViewController.swift */; };
+		AFA431552B2C400400B1B376 /* geneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431542B2C400400B1B376 /* geneData.swift */; };
+		AFB5CBA92B3D846800E01054 /* profileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB5CBA82B3D846800E01054 /* profileDetails.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		AFA431362B2C3D9400B1B376 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AFA431172B2C3D9300B1B376 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AFA4311E2B2C3D9300B1B376;
-			remoteInfo = Gene;
-		};
-		AFA431402B2C3D9400B1B376 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AFA431172B2C3D9300B1B376 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AFA4311E2B2C3D9300B1B376;
-			remoteInfo = Gene;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoPreviewViewController.swift; sourceTree = "<group>"; };
+		AF38E1612B4D6A9E0035F4FB /* LoginViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewContoller.swift; sourceTree = "<group>"; };
+		AF38E1632B4D6F630035F4FB /* signupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signupViewController.swift; sourceTree = "<group>"; };
 		AFA4311F2B2C3D9300B1B376 /* Gene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gene.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFA431222B2C3D9300B1B376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFA431242B2C3D9300B1B376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		AFA431262B2C3D9300B1B376 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		AFA431292B2C3D9300B1B376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AFA431262B2C3D9300B1B376 /* cameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cameraViewController.swift; sourceTree = "<group>"; };
 		AFA4312B2B2C3D9400B1B376 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFA4312E2B2C3D9400B1B376 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFA431302B2C3D9400B1B376 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AFA431352B2C3D9400B1B376 /* GeneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFA431392B2C3D9400B1B376 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
-		AFA4313F2B2C3D9400B1B376 /* GeneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFA431432B2C3D9400B1B376 /* GeneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneUITests.swift; sourceTree = "<group>"; };
-		AFA431452B2C3D9400B1B376 /* GeneUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AFA431522B2C3FAF00B1B376 /* homePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homePageViewController.swift; sourceTree = "<group>"; };
+		AFA431542B2C400400B1B376 /* geneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geneData.swift; sourceTree = "<group>"; };
+		AFB5CBA82B3D846800E01054 /* profileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		AFA4311C2B2C3D9300B1B376 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA431322B2C3D9400B1B376 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA4313C2B2C3D9400B1B376 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -80,8 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				AFA431212B2C3D9300B1B376 /* Gene */,
-				AFA431382B2C3D9400B1B376 /* GeneTests */,
-				AFA431422B2C3D9400B1B376 /* GeneUITests */,
 				AFA431202B2C3D9300B1B376 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,8 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				AFA4311F2B2C3D9300B1B376 /* Gene.app */,
-				AFA431352B2C3D9400B1B376 /* GeneTests.xctest */,
-				AFA4313F2B2C3D9400B1B376 /* GeneUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,30 +68,18 @@
 			children = (
 				AFA431222B2C3D9300B1B376 /* AppDelegate.swift */,
 				AFA431242B2C3D9300B1B376 /* SceneDelegate.swift */,
-				AFA431262B2C3D9300B1B376 /* ViewController.swift */,
-				AFA431282B2C3D9300B1B376 /* Main.storyboard */,
+				AF38E1612B4D6A9E0035F4FB /* LoginViewContoller.swift */,
+				AF38E1632B4D6F630035F4FB /* signupViewController.swift */,
+				AFA431522B2C3FAF00B1B376 /* homePageViewController.swift */,
+				AFA431262B2C3D9300B1B376 /* cameraViewController.swift */,
+				AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */,
+				AFB5CBA82B3D846800E01054 /* profileDetails.swift */,
+				AFA431542B2C400400B1B376 /* geneData.swift */,
 				AFA4312B2B2C3D9400B1B376 /* Assets.xcassets */,
 				AFA4312D2B2C3D9400B1B376 /* LaunchScreen.storyboard */,
 				AFA431302B2C3D9400B1B376 /* Info.plist */,
 			);
 			path = Gene;
-			sourceTree = "<group>";
-		};
-		AFA431382B2C3D9400B1B376 /* GeneTests */ = {
-			isa = PBXGroup;
-			children = (
-				AFA431392B2C3D9400B1B376 /* GeneTests.swift */,
-			);
-			path = GeneTests;
-			sourceTree = "<group>";
-		};
-		AFA431422B2C3D9400B1B376 /* GeneUITests */ = {
-			isa = PBXGroup;
-			children = (
-				AFA431432B2C3D9400B1B376 /* GeneUITests.swift */,
-				AFA431452B2C3D9400B1B376 /* GeneUITestsLaunchTests.swift */,
-			);
-			path = GeneUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,42 +102,6 @@
 			productReference = AFA4311F2B2C3D9300B1B376 /* Gene.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AFA431342B2C3D9400B1B376 /* GeneTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AFA4314C2B2C3D9400B1B376 /* Build configuration list for PBXNativeTarget "GeneTests" */;
-			buildPhases = (
-				AFA431312B2C3D9400B1B376 /* Sources */,
-				AFA431322B2C3D9400B1B376 /* Frameworks */,
-				AFA431332B2C3D9400B1B376 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AFA431372B2C3D9400B1B376 /* PBXTargetDependency */,
-			);
-			name = GeneTests;
-			productName = GeneTests;
-			productReference = AFA431352B2C3D9400B1B376 /* GeneTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AFA4313E2B2C3D9400B1B376 /* GeneUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AFA4314F2B2C3D9400B1B376 /* Build configuration list for PBXNativeTarget "GeneUITests" */;
-			buildPhases = (
-				AFA4313B2B2C3D9400B1B376 /* Sources */,
-				AFA4313C2B2C3D9400B1B376 /* Frameworks */,
-				AFA4313D2B2C3D9400B1B376 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AFA431412B2C3D9400B1B376 /* PBXTargetDependency */,
-			);
-			name = GeneUITests;
-			productName = GeneUITests;
-			productReference = AFA4313F2B2C3D9400B1B376 /* GeneUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -195,14 +114,6 @@
 				TargetAttributes = {
 					AFA4311E2B2C3D9300B1B376 = {
 						CreatedOnToolsVersion = 15.1;
-					};
-					AFA431342B2C3D9400B1B376 = {
-						CreatedOnToolsVersion = 15.1;
-						TestTargetID = AFA4311E2B2C3D9300B1B376;
-					};
-					AFA4313E2B2C3D9400B1B376 = {
-						CreatedOnToolsVersion = 15.1;
-						TestTargetID = AFA4311E2B2C3D9300B1B376;
 					};
 				};
 			};
@@ -220,8 +131,6 @@
 			projectRoot = "";
 			targets = (
 				AFA4311E2B2C3D9300B1B376 /* Gene */,
-				AFA431342B2C3D9400B1B376 /* GeneTests */,
-				AFA4313E2B2C3D9400B1B376 /* GeneUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -233,21 +142,6 @@
 			files = (
 				AFA4312F2B2C3D9400B1B376 /* LaunchScreen.storyboard in Resources */,
 				AFA4312C2B2C3D9400B1B376 /* Assets.xcassets in Resources */,
-				AFA4312A2B2C3D9300B1B376 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA431332B2C3D9400B1B376 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA4313D2B2C3D9400B1B376 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,53 +152,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFA431272B2C3D9300B1B376 /* ViewController.swift in Sources */,
+				AFA431532B2C3FAF00B1B376 /* homePageViewController.swift in Sources */,
+				AF38E1622B4D6A9E0035F4FB /* LoginViewContoller.swift in Sources */,
+				AFA431272B2C3D9300B1B376 /* cameraViewController.swift in Sources */,
+				AFA431552B2C400400B1B376 /* geneData.swift in Sources */,
+				AF38E1642B4D6F630035F4FB /* signupViewController.swift in Sources */,
 				AFA431232B2C3D9300B1B376 /* AppDelegate.swift in Sources */,
+				AFB5CBA92B3D846800E01054 /* profileDetails.swift in Sources */,
+				AF38E1602B4923940035F4FB /* photoPreviewViewController.swift in Sources */,
 				AFA431252B2C3D9300B1B376 /* SceneDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA431312B2C3D9400B1B376 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AFA4313A2B2C3D9400B1B376 /* GeneTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AFA4313B2B2C3D9400B1B376 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AFA431442B2C3D9400B1B376 /* GeneUITests.swift in Sources */,
-				AFA431462B2C3D9400B1B376 /* GeneUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		AFA431372B2C3D9400B1B376 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AFA4311E2B2C3D9300B1B376 /* Gene */;
-			targetProxy = AFA431362B2C3D9400B1B376 /* PBXContainerItemProxy */;
-		};
-		AFA431412B2C3D9400B1B376 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AFA4311E2B2C3D9300B1B376 /* Gene */;
-			targetProxy = AFA431402B2C3D9400B1B376 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		AFA431282B2C3D9300B1B376 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				AFA431292B2C3D9300B1B376 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		AFA4312D2B2C3D9400B1B376 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -368,7 +230,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -425,7 +287,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -447,7 +309,6 @@
 				INFOPLIST_FILE = Gene/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -475,7 +336,6 @@
 				INFOPLIST_FILE = Gene/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -488,82 +348,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		AFA4314D2B2C3D9400B1B376 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZ99WGS2RM;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manoj.GeneTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Gene.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Gene";
-			};
-			name = Debug;
-		};
-		AFA4314E2B2C3D9400B1B376 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZ99WGS2RM;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manoj.GeneTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Gene.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Gene";
-			};
-			name = Release;
-		};
-		AFA431502B2C3D9400B1B376 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZ99WGS2RM;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manoj.GeneUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Gene;
-			};
-			name = Debug;
-		};
-		AFA431512B2C3D9400B1B376 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FZ99WGS2RM;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = manoj.GeneUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Gene;
 			};
 			name = Release;
 		};
@@ -584,24 +368,6 @@
 			buildConfigurations = (
 				AFA4314A2B2C3D9400B1B376 /* Debug */,
 				AFA4314B2B2C3D9400B1B376 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AFA4314C2B2C3D9400B1B376 /* Build configuration list for PBXNativeTarget "GeneTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AFA4314D2B2C3D9400B1B376 /* Debug */,
-				AFA4314E2B2C3D9400B1B376 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AFA4314F2B2C3D9400B1B376 /* Build configuration list for PBXNativeTarget "GeneUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AFA431502B2C3D9400B1B376 /* Debug */,
-				AFA431512B2C3D9400B1B376 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
