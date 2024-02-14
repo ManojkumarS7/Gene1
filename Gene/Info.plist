@@ -23,6 +23,8 @@
 	<string>save photo</string>
 	<key>NSCameraUsageDescription</key>
 	<string>taking pictures</string>
+	<key>NSCameraPortraitEffectEnabled</key>
+	<true/>
 	<key>CFBundleIdentifier</key>
 	<string></string>
 </dict>

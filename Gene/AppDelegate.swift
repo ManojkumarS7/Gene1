@@ -9,7 +9,9 @@
 import UIKit
 
 //@available(iOS 13.0, *)
+@available(iOS 17.0, *)
 @main
+
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 var window: UIWindow?
@@ -17,10 +19,19 @@ var window: UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
- let homeViewController = homePageViewController()
+// let homeViewController = homePageViewController()
+//   let homeViewController = HomePage()
 //        let homeViewController = cameraViewController()
         
-//     let homeViewController = LoginViewController()
+     let homeViewController = LoginViewController()
+        
+//        let viewController : UIViewController
+//        if isLoggedIn() {
+//            viewController = homePageViewController()
+//        } else {
+//            
+//            viewController = LoginViewController()
+//        }
         let navigationController = UINavigationController(rootViewController: homeViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
@@ -28,6 +39,16 @@ var window: UIWindow?
         return true
     }
 
+    func isLoggedIn() -> Bool {
+        
+        if let _ = UserDefaults.standard.string(forKey: "username"),
+            let _ = UserDefaults.standard.string(forKey: "password") {
+           
+            return true
+        }
+        return false
+    }
+    
     //MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

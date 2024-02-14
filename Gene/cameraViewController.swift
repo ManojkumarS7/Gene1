@@ -10,11 +10,13 @@ import UIKit
 import AVFoundation
 import Photos
 import CoreMotion
+import CoreImage
 
 
 
-
-class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGestureRecognizerDelegate {
+class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGestureRecognizerDelegate{
+ 
+    
     
     
     var cameraView: UIView!
@@ -25,11 +27,11 @@ class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGe
     var frontCamera : AVCaptureDevice!
     var currentCamera: AVCaptureDevice?
     var ultraWideCamera: AVCaptureDevice!
-    var captureSession : AVCaptureSession!
+    var captureSession = AVCaptureSession()
     var stillImageOutput: AVCapturePhotoOutput!
     var previewLayer: AVCaptureVideoPreviewLayer!
-    var positionString : String!
-    
+    var positionString = String()
+    var imageView : UIImageView!
     var currentZoomFactor: CGFloat = 1.0
     var maxZoomFactor: CGFloat = 5.0
     var zoomStep: CGFloat = 1.0
@@ -65,11 +67,12 @@ class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGe
     var capturedImage: UIImage?
     var sliderHiderTimer: Timer!
     var finalAngle : Double = 0.0
-    var potraitButton : UIButton!
-var isPortraitEffectEnabled : Bool = false
-    //var portraitEffectFilter: CIFilter?
-    var finalAngleFromPicture : Double = 0.0
+    var portraitEffectButton : UIButton!
+    var isPortraitEffectEnabled: Bool = true
     
+   var finalAngleFromPicture : Double = 0.0
+    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,29 +97,14 @@ var isPortraitEffectEnabled : Bool = false
         //        switchCamera(to: backCamera)
         //    }
         
+       
     }
-    
-    
-    
-    
+  
     //it was using for hide status bar on display eg:battery status,singnal
     override  var prefersStatusBarHidden: Bool{
         return true
     }
-    
-    
-    
-    
-    ////
-    //override func viewDidAppear(_ animated: Bool) {
-    //    super.viewDidAppear(animated)
-    //
-    //   previewLayer?.connection?.videoOrientation = currentVideoOrientation()
-    //  previewLayer?.frame = cameraView.bounds
-    //  // previewLayer.videoGravity = .resizeAspect
-    //
-    //}
-    
+ 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -142,26 +130,29 @@ var isPortraitEffectEnabled : Bool = false
         cameraView = UIView()
         cameraView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cameraView)
+        
         NSLayoutConstraint.activate([
             cameraView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             cameraView.topAnchor.constraint(equalTo: view.topAnchor),
             cameraView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        
     }
     
     
     func setupLevelView() {
-        levelView = UIView(frame: CGRect(x: 0, y: 0, width: cameraView.frame.width, height: 2))
+        levelView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 2))
         levelView.backgroundColor = UIColor.red
-        cameraView.addSubview(levelView)
+        view.addSubview(levelView)
         levelView.translatesAutoresizingMaskIntoConstraints = false
         
         // Adding center constraints for the levelView
         NSLayoutConstraint.activate([
-            levelView.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
-            levelView.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
-            levelView.widthAnchor.constraint(equalTo: cameraView.widthAnchor, multiplier: 1.0),
+            levelView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            levelView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            levelView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0),
             levelView.heightAnchor.constraint(equalToConstant: 2)
         ])
         
@@ -170,55 +161,85 @@ var isPortraitEffectEnabled : Bool = false
     
     
     
+   
     
-    func setupCamera() {
-        captureSession = AVCaptureSession()
-        //captureSession.sessionPreset = currentAspectRatio
-        stillImageOutput = AVCapturePhotoOutput()
-        
-        guard let backCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else { return }
-        self.backCamera = backCamera
-        
-        guard let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {return}
+ 
+   func setupCamera() {
+      captureSession = AVCaptureSession()
+       
+        let settings = AVCapturePhotoSettings()
+        guard let backCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+            print("Unable to access the back camera.")
+            return
+        }
+       
+       
+           
+           
+           self.backCamera = backCamera
+       
+        guard let frontCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front) else {
+            print("Unable to access the front camera.")
+            return
+        }
         self.frontCamera = frontCamera
-        
-        
-        guard let ultraWideCamera = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else { return }
+
+        guard let ultraWideCamera = AVCaptureDevice.default(.builtInUltraWideCamera, for: .video, position: .back) else {
+            print("Unable to access the ultra-wide camera.")
+            return
+        }
         self.ultraWideCamera = ultraWideCamera
-        
-        currentCamera = backCamera
-        
+//
+        guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
+        else { fatalError("No dual camera")}
+//
+      currentCamera = backCamera
+//
         if let currentCamera = currentCamera {
-            
             setupZoom(for: currentCamera)
             setupExposure(for: currentCamera)
         }
-        
+//
         do {
-            let input = try AVCaptureDeviceInput( device: currentCamera!)
+            let input = try AVCaptureDeviceInput(device: videoDevice)
             if captureSession.canAddInput(input) {
                 captureSession.addInput(input)
             }
-            
+
+            //if isPortraitEffectEnabled {
             stillImageOutput = AVCapturePhotoOutput()
-            if captureSession.canAddOutput(stillImageOutput) {
-                captureSession.addOutput(stillImageOutput)
+            if stillImageOutput.isPortraitEffectsMatteDeliverySupported {
+                stillImageOutput.isPortraitEffectsMatteDeliveryEnabled = true
+            } else {
+            print("Depth delivery not supported")
             }
-            
+            if captureSession.canAddOutput(stillImageOutput!) {
+                captureSession.addOutput(stillImageOutput!)
+            }
+
             changeAspectRatio(preset: currentAspectRatio)
             previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             previewLayer.videoGravity = .resizeAspectFill
             previewLayer.frame = cameraView.bounds
             cameraView?.layer.addSublayer(previewLayer)
-            
+
             DispatchQueue.global(qos: .userInitiated).async {
                 self.captureSession.startRunning()
             }
         } catch {
             print("Error setting up camera: \(error)")
         }
-        
+       
+       
+       
+  
+
+       // Enable delivery of depth data after adding the output to the capture session.
+      stillImageOutput.isDepthDataDeliveryEnabled = stillImageOutput.isDepthDataDeliverySupported
+       self.captureSession.commitConfiguration()
     }
+    
+
     func setCameralens(_ cameralens: String) {
         
         switch cameralens {
@@ -289,10 +310,7 @@ var isPortraitEffectEnabled : Bool = false
             
             if let frontCamera = frontCamera {
                 switchCamera(to: frontCamera)
-                
-                
-                
-                
+             
             }
             wideControll?.isHidden = true
         case "back":
@@ -301,10 +319,7 @@ var isPortraitEffectEnabled : Bool = false
             if let backCamera = backCamera {
                 
                 switchCamera(to: backCamera)
-                
-                
-                
-                
+              
             }
             wideControll?.isHidden = false
             // positionString = cameraPosition
@@ -324,7 +339,7 @@ var isPortraitEffectEnabled : Bool = false
         
         DispatchQueue.main.async { [self] in
             positionString = (currentCamera.position == .front) ? "Front" : "Back"
-            print(positionString!)
+            print(positionString)
         }
         
         //        if currentCamera?.position == .front {
@@ -399,13 +414,24 @@ var isPortraitEffectEnabled : Bool = false
     
     
     func setAspectRatio(_ aspectRatio: String) {
+        
+        let settings = AVCapturePhotoSettings()
         switch aspectRatio {
         case "4:3":
-            changeAspectRatio(preset: .photo)
+      changeAspectRatio(preset: .photo)
+           // captureSession.sessionPreset = .photo
+           // previewLayer.videoGravity = .resizeAspect
+           
         case "16:9":
-            changeAspectRatio(preset: .high)
+        changeAspectRatio(preset: .high)
+           // captureSession.sessionPreset = .hd1920x1080
+       // previewLayer.videoGravity = .resizeAspectFill
         case "1:1":
-            setSquareAspectRatio()
+        setSquareAspectRatio()
+            
+            //captureSession.sessionPreset = .medium
+          //  previewLayer.videoGravity = .resize
+          
         default:
             break
         }
@@ -423,8 +449,9 @@ var isPortraitEffectEnabled : Bool = false
     
     func changeAspectRatio(preset: AVCaptureSession.Preset) {
         
-        let captureSession = AVCaptureSession()
+     //   let captureSession = AVCaptureSession()
         captureSession.beginConfiguration()
+    
         captureSession.sessionPreset = preset
         captureSession.commitConfiguration()
         
@@ -449,7 +476,14 @@ var isPortraitEffectEnabled : Bool = false
             self.previewLayer?.frame = CGRect(x: 0, y: yOffset, width: UIScreen.main.bounds.width, height: previewLayerHeight)
         }
     }
+    
+   
     func setSquareAspectRatio() {
+        captureSession.beginConfiguration()
+        captureSession.sessionPreset = .photo
+        captureSession.commitConfiguration()
+
+       
         
         let previewLayerHeight = UIScreen.main.bounds.width
         let yOffset = (UIScreen.main.bounds.height - previewLayerHeight) / 2.0
@@ -470,15 +504,14 @@ var isPortraitEffectEnabled : Bool = false
             
         case 10:
             timerDuration = 0
-            sender.setTitle("Off", for: .normal)
+            sender.setTitle("", for: .normal)
             
         default:
             break
         }
         
     }
-    
-    
+   
     func setupMotionManager(finalAngle: Double) {
         motionManager = CMMotionManager()
         //  motionManager.deviceMotionUpdateInterval = 0.1 // Adjust as needed
@@ -496,8 +529,8 @@ var isPortraitEffectEnabled : Bool = false
                 
                 //     let attitude = motion.attitude
                 //   _ = attitude.roll * 180.0 / .pi
-                let pitch = attitude.pitch * 180.0 / .pi
-                let yaw = attitude.yaw * 180.0 / .pi
+                _ = attitude.pitch * 180.0 / .pi
+                _ = attitude.yaw * 180.0 / .pi
                 
                 // Calculate the angle between the device's top vector and a reference vector
                 let referenceVector = CGVector(dx: 0, dy: -1) // For example, pointing upwards
@@ -556,8 +589,7 @@ var isPortraitEffectEnabled : Bool = false
             print("Device motion data is not available.")
         }
     }
-    
-    
+  
     func currentVideoOrientation() -> AVCaptureVideoOrientation {
         let orientation = UIDevice.current.orientation
         switch orientation {
@@ -573,32 +605,7 @@ var isPortraitEffectEnabled : Bool = false
             return .portrait
         }
     }
-    
-    
-    
-    /// @objc func handlePinchGesture(_ recognizer: UIPinchGestureRecognizer) {
-    //        guard AVCaptureDevice.default(for: .video) != nil else {
-    //            print("Unable to access the camera.")
-    //            return
-    //        }
-    //
-    //        if recognizer.state == .changed {
-    //            var zoomFactor = recognizer.scale * currentZoomFactor
-    //            zoomFactor = max(1.0, min(zoomFactor, maxZoomFactor))
-    //            _ = round(zoomFactor / zoomStep) * zoomStep
-    //            updateZoomFactor(zoomFactor)
-    //        }
-    //    }
-    //
-    //    @objc func handleFlashModeChange(_ recognizer: UILongPressGestureRecognizer) {
-    //        if recognizer.state == .began {
-    //            toggleFlashAlwaysOn()
-    //        } else if recognizer.state == .ended {
-    //            updateFlashMode()
-    //        }
-    //    }
-    //
-    
+
     @objc func handlePinchGesture(_ recognizer: UIPinchGestureRecognizer) {
         guard let currentCamera = currentCamera else {
             print("No current camera available.")
@@ -620,8 +627,7 @@ var isPortraitEffectEnabled : Bool = false
             updateZoomFactor(currentCamera.videoZoomFactor)
         }
     }
-    
-    
+  
     @objc func capturePhoto(_ sender: UIButton) {
         // Check if the timer is set and start the countdown
         if timerDuration > 0 {
@@ -658,43 +664,107 @@ var isPortraitEffectEnabled : Bool = false
             // If no timer is set, capture the photo immediately
             captureImage()
         }
-        
-        //  let view = photoPreviewViewController()
-        //  navigationController?.pushViewController(view, animated: true)
+
         
     }
-    
-    
-    
-    
     func captureImage() {
-        
-        
-        let settings = AVCapturePhotoSettings()
-        
-        if stillImageOutput.isPortraitEffectsMatteDeliverySupported {
-            settings.isPortraitEffectsMatteDeliveryEnabled = true
-        }
-                
+        guard let stillImageOutput = stillImageOutput else {return}
+       
+        let photoSettings = AVCapturePhotoSettings()
+
+
         if isFlashOn {
-            settings.flashMode = .on
-            
-            print(settings.flashMode.rawValue)
-            
-        } else  {
-            settings.flashMode = .off
-            print(settings.flashMode.rawValue)
-            
+           photoSettings.flashMode = .on
+        } else {
+            photoSettings.flashMode = .off
         }
         
-        
-        
-        stillImageOutput?.capturePhoto(with: settings, delegate: self)
-        //  _ = motionManager!.deviceMotion?.attitude.yaw ?? 0.0
+        if stillImageOutput.isDepthDataDeliverySupported {
+            photoSettings.isDepthDataDeliveryEnabled = true
+        } else {
+            photoSettings.isDepthDataDeliveryEnabled = false
+        }
+        stillImageOutput.capturePhoto(with: photoSettings, delegate: self)
+
     }
+
     
-    
-    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+           if let error = error {
+               print("Error capturing photo: \(error)")
+               return
+           }
+           
+           guard let imageData = photo.fileDataRepresentation() else {
+               print("Error getting photo data.")
+               return
+           }
+           
+           if let image = UIImage(data: imageData) {
+               
+            
+        
+             //  savePhotoToLibrary(image)
+                  // uploadImage(image: image)
+                   // capturedImage = image
+                    
+               let preview = photoPreviewViewController(frame: view.bounds)
+               preview.imageView.image = image
+               view.addSubview(preview)
+                
+               }
+           
+       }
+       
+            
+            
+            //func savePhotoToLibrary(_ image: UIImage) {
+//
+//        
+//        
+//        //        let currentAspectRatio: AVCaptureSession.Preset = captureSession.sessionPreset
+//        //        let aspectRatioString = aspectRatioString(for: currentAspectRatio)
+//        //        print("Aspect Ratio Used: \(aspectRatioString)")
+//        //
+//        
+//     
+//            
+//            _ = AVCapturePhotoSettings()
+//            PHPhotoLibrary.requestAuthorization { status in
+//                guard status == .authorized else {
+//                    print("Photo library access not authorized.")
+//                    return
+//                }
+//                
+//                PHPhotoLibrary.shared().performChanges {
+//                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+//                } completionHandler: { [self] success, error in
+//                    if let error = error {
+//                        print("Error saving photo to library: \(error)")
+//                    } else {
+//                        print("Photo saved to library successfully.")
+//                        print("Zoom Level: \(self.currentZoomFactor)")
+//                        print("Exposure Value: \(currentExposureValue)")
+//                        print("Focus Level: \(currentFocusLevel)")
+//                        print ("Flash mode :\( isFlashOn)")
+//                        print("Timer:\(timerDuration)")
+//                        print("Aspect Ratio :\(selectedAspectRatio)")
+//                        //print("Camera angle :\(selectedAngle)")
+//                        print(selectedlens)
+//                        //print(currentCamerPosition)
+//                        print("currentCamera:\(positionString)")
+//                        
+//                        //   print(positionString!)
+//                        // let finalAngle = (360.0 - yawAngle).truncatingRemainder(dividingBy: 360.0)
+//                        //print("Final Angle Of Picture: \(roll)")
+//                        
+//                        
+//                        
+//                    }
+//                }
+//            }
+//        }
+// 
     @objc func flashButtonPressed(_ sender: UIButton) {
         
         isFlashOn = !isFlashOn
@@ -702,206 +772,7 @@ var isPortraitEffectEnabled : Bool = false
         let image = isFlashOn ? "bolt.fill" : "bolt.slash.fill"
         flashModeButton.setImage(UIImage(systemName: image)?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
     }
-    
-    //    func getcurrentFlashMode()  {
-    //        let settings =  AVCapturePhotoSettings()
-    //
-    //        if isFlashOn {
-    //          settings.flashMode = .on
-    //            print("off")
-    //
-    //         } else {
-    //             settings.flashMode = .off
-    //             print("off")
-    //
-    //         }
-    //
-    //
-    //
-    //    stillImageOutput?.capturePhoto(with: settings, delegate: self)
-    //
-    //    }
-    //
-    
-    
-    
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        if let error = error {
-            print("Error capturing photo: \(error)")
-            return
-        }
-        
-        guard let imageData = photo.fileDataRepresentation() else {
-            print("Error getting photo data.")
-            return
-        }
-        
-        if let image = UIImage(data: imageData) {
-            
-         
-     
-                savePhotoToLibrary(image)
-                uploadImage(image: image)
-                // capturedImage = image
-                //   showPhotoPreview()
-                
-                /*  let currentYawAngle = motionManager.deviceMotion?.attitude.yaw ?? 0.0
-                 let referenceVector = CGVector(dx: 0, dy: -1) // For example, pointing upwards
-                 let deviceTopVector = CGVector(dx: CGFloat(cos(-currentYawAngle)), dy: CGFloat(sin(-currentYawAngle)))
-                 let angle = atan2(deviceTopVector.dy, deviceTopVector.dx) - atan2(referenceVector.dy, referenceVector.dx)
-                 var angleInDegrees = angle * 180.0 / .pi
-                 angleInDegrees = (angleInDegrees + 360.0).truncatingRemainder(dividingBy: 360.0)*/
-            }
-        
-    }
-    
-    //    func showPhotoPreview() {
-    //        guard let capturedImage = capturedImage else {
-    //            print("captured image is nil")
-    //            return
-    //        }
-    //
-    //       // let photopreviewvc =
-    //
-    //        let photoPreviewVC = photoPreviewViewController()
-    //            photoPreviewVC.delegate = self
-    //            photoPreviewVC.imageToDisplay = capturedImage
-    //            present(photoPreviewVC, animated: true, completion: nil)
-    //
-    //
-    //    }
-    //
-    
-    func savePhotoToLibrary(_ image: UIImage) {
-        
-        
-        
-        //        let currentAspectRatio: AVCaptureSession.Preset = captureSession.sessionPreset
-        //        let aspectRatioString = aspectRatioString(for: currentAspectRatio)
-        //        print("Aspect Ratio Used: \(aspectRatioString)")
-        //
-        
-        _ = AVCapturePhotoSettings()
-        PHPhotoLibrary.requestAuthorization { status in
-            guard status == .authorized else {
-                print("Photo library access not authorized.")
-                return
-            }
-            
-            PHPhotoLibrary.shared().performChanges {
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            } completionHandler: { [self] success, error in
-                if let error = error {
-                    print("Error saving photo to library: \(error)")
-                } else {
-                    print("Photo saved to library successfully.")
-                    print("Zoom Level: \(self.currentZoomFactor)")
-                    print("Exposure Value: \(currentExposureValue)")
-                    print("Focus Level: \(currentFocusLevel)")
-                    print ("Flash mode :\( isFlashOn)")
-                    print("Timer:\(timerDuration)")
-                    print("Aspect Ratio :\(selectedAspectRatio)")
-                    //print("Camera angle :\(selectedAngle)")
-                    print(selectedlens)
-                    //print(currentCamerPosition)
-                    print("currentCamera:\(positionString)")
-                    
-                    //   print(positionString!)
-                    // let finalAngle = (360.0 - yawAngle).truncatingRemainder(dividingBy: 360.0)
-                    //print("Final Angle Of Picture: \(roll)")
-                    
-                    
-                    
-                    //Dictionary to store a values
-                    let jsonDict: [String: Any] = [
-                        "Zoom Level": self.currentZoomFactor,
-                        "Exposure Value": self.currentExposureValue,
-                        "Focus Level": self.currentFocusLevel,
-                        "Final Angle Of Picture": finalAngleFromPicture,
-                        "CurrentAspect Ratio": selectedAspectRatio
-                        
-                    ]
-                    
-                    // Convert the dictionary to JSON data
-                    if let jsonData = try? JSONSerialization.data(withJSONObject: jsonDict, options: []) {
-                        if let jsonString = String(data: jsonData, encoding: .utf8) {
-                            print("JSON String: \(jsonString)")
-                            
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    // }
-    
-    
-    //
-    //    @objc func handleAETap(_ recognizer: UITapGestureRecognizer) {
-    //        if recognizer.state == .ended {
-    //            let point = recognizer.location(in: cameraView)
-    //            updateFocus(at: point)
-    //            showFocusBox(at: point)
-    //
-    //        }
-    //    }
-    //
-    //    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
-    //        if recognizer.state == .ended {
-    //            let point = recognizer.location(in: cameraView)
-    //            showFocusBox(at: point)
-    //
-    //            // Check if the tap is on the right side of the focus box
-    //            let boxCenterX = boxView.frame.origin.x + boxView.frame.size.width / 2
-    //            if point.x > boxCenterX {
-    //                showExposureSlider(at: point)
-    //            } else {
-    //
-    //            }
-    //        }
-    //    }
-    //
-    //    func showExposureSlider(at point: CGPoint) {
-    //        exposureSlider.center = CGPoint(x: point.x, y: exposureSlider.center.y)
-    //        exposureSlider.isHidden = false
-    //    }
-    //
-    //    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
-    //         if recognizer.state == .ended {
-    //             let point = recognizer.location(in: cameraView)
-    //             showFocusBox(at: point)
-    //             updateFocus(at: point,isCloseDepth: true)
-    //             // Check if the tap is on the right side of the focus box
-    //             _ = boxView.frame.origin.x  + boxView.frame.size.width / 2
-    //
-    //         }
-    //     }
-    //
-    //
-    //    @objc func handleAFTap(_ recognizer: UITapGestureRecognizer) {
-    //        if recognizer.state == .ended {
-    //            let point = recognizer.location(in: cameraView)
-    //
-    //            updateFocus(at: point,isCloseDepth: true)
-    //            showFocusBox(at: point)
-    //        }
-    //    }
-    //
-    
-    func togglePortraitEffect() {
-       isPortraitEffectEnabled = !isPortraitEffectEnabled
-        
-        let buttonColor: UIColor = isPortraitEffectEnabled ? .yellow : .white
-           potraitButton.tintColor = buttonColor
-        // Update UI or perform other actions based on the state of the effect
-    }
-    @objc func portraitEffectButtonTapped() {
-        togglePortraitEffect()
-    }
-
-    
+  
 
     func showFocusBox(at point: CGPoint) {
            _ = previewLayer.captureDevicePointConverted(fromLayerPoint: point)
@@ -966,46 +837,16 @@ var isPortraitEffectEnabled : Bool = false
              showFocusBox(at: point)
              updateFocus(at: point)
              showSlider(at: point)
-           //  setPotraitEffect(at: point)
-           
+         
          }
      }
 
-    func applyPortraitEffect(to image: UIImage) {
-        guard let ciImage = CIImage(image: image) else { return }
-
-        // Apply Gaussian Blur
-        let gaussianBlurFilter = CIFilter(name: "CIGaussianBlur")
-        gaussianBlurFilter?.setValue(ciImage, forKey: kCIInputImageKey)
-        
-        // Adjust the blur radius as needed (you can set it to a specific value)
-        let blurRadius: CGFloat = 10.0
-        gaussianBlurFilter?.setValue(blurRadius, forKey: kCIInputRadiusKey)
-
-        if let outputImage = gaussianBlurFilter?.outputImage {
-            // Create a composite filter to combine the Gaussian blur with the original image
-            let compositeFilter = CIFilter(name: "CISourceOverCompositing")
-            compositeFilter?.setValue(outputImage, forKey: kCIInputImageKey)
-            compositeFilter?.setValue(ciImage, forKey: kCIInputBackgroundImageKey)
-
-            if let finalOutputImage = compositeFilter?.outputImage {
-                let context = CIContext(options: nil)
-                if let cgImage = context.createCGImage(finalOutputImage, from: finalOutputImage.extent) {
-                    let portraitImage = UIImage(cgImage: cgImage)
-                    savePhotoToLibrary(portraitImage)
-                }
-            }
-        }
-    }
-
     
+    
+  
     func updateZoomFactor(_ zoomFactor: CGFloat) {
         currentZoomFactor = zoomFactor
         
-//        guard let activeCamera = AVCaptureDevice.default( for: .video) else {
-//            print("Unable to access the camera.")
-//            return
-//        }
         
         guard let currentCamera = currentCamera else {
             print("current camera cannot available")
@@ -1034,6 +875,8 @@ var isPortraitEffectEnabled : Bool = false
                 print("Error updating zoom factor: \(error)")
             }
         }
+    
+
     
     func setupZoom(for camera: AVCaptureDevice) {
         do {
@@ -1110,6 +953,9 @@ var isPortraitEffectEnabled : Bool = false
             print("Error updating focus and exposure: \(error)")
         }
     }
+    
+    
+   
     
 //    func showFocusBox(at point: CGPoint) {
 //        _ = previewLayer.captureDevicePointConverted(fromLayerPoint: point)
@@ -1259,6 +1105,7 @@ var isPortraitEffectEnabled : Bool = false
         }
         
     }
+   
 //    func updateExposure2(_ value: Float) {
 //        if let backCamera = AVCaptureDevice.default(for: .video) {
 //            do {
@@ -1596,19 +1443,7 @@ var isPortraitEffectEnabled : Bool = false
         wideControll.selectedSegmentIndex = 0 // Select the default segment
         wideControll.addTarget(self, action: #selector(wideAngleValueChanged(_:)), for: .valueChanged)
         view.addSubview(wideControll)
-        
-        
-        let potraitImage = UIImage(systemName: "person.crop.circle.dashed.circle")
-        
-        potraitButton = UIButton(type: .system)
-        potraitButton.tintColor = .white
-        potraitButton.setImage(potraitImage, for: .normal)
-        potraitButton.translatesAutoresizingMaskIntoConstraints = false
-        potraitButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-        potraitButton.addTarget(self, action: #selector(portraitEffectButtonTapped), for: .touchUpInside)
-        view.addSubview(potraitButton)
-        
-       // updatePortraitButtonStyle()
+ 
         
         NSLayoutConstraint.activate([
             captureButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -1628,10 +1463,7 @@ var isPortraitEffectEnabled : Bool = false
             aspectControll!.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             aspectControll!.centerYAnchor.constraint(equalTo: view.bottomAnchor,constant: -130 ),
             
-            potraitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            potraitButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120),
-            potraitButton.widthAnchor.constraint(equalToConstant: 50),
-            potraitButton.heightAnchor.constraint(equalToConstant: 50),
+
             
             cameraSwitchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20), // 20 points from the right edge
             cameraSwitchButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),   // 20 points from the bottom edge
@@ -1741,7 +1573,7 @@ var isPortraitEffectEnabled : Bool = false
                    "aspectRatio" : selectedAspectRatio,
                    "cameralens" : selectedlens,
                    "cameraangle" : finalAngleFromPicture,
-                   "cameraposition" : positionString!
+                   "cameraposition" : positionString
                    
                    
         ] as [String : Any]
@@ -1891,17 +1723,3 @@ extension UIImage {
 }
 
 
-
-
-//    
-//    extension UIImage {
-//        static func imageWithColor(_ color: UIColor, size: CGSize) -> UIImage {
-//            let rect = CGRect(origin: .zero, size: size)
-//            UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-//            color.setFill()
-//            UIRectFill(rect)
-//            let image = UIGraphicsGetImageFromCurrentImageContext()
-//            UIGraphicsEndImageContext()
-//            return image!
-//        }
-//    }

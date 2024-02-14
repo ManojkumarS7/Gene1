@@ -5,18 +5,22 @@
 //  Created by manoj on 15/12/23.
 //
 
-import UIKit
-import AVFoundation
 
+
+
+import UIKit
+//import AVFoundation
+//
+@available(iOS 16.0, *)
 class homePageViewController: UIViewController {
     var scrollView: UIScrollView!
     var stackView: UIStackView!
-   // var profileButton : UIButton!
+
     
     var refreshControl : UIRefreshControl!
     
     var templateData : geneData!
-//    var templateData : geneData!
+
     
    let openVC = cameraViewController()
     
@@ -32,6 +36,7 @@ class homePageViewController: UIViewController {
             .font: UIFont.boldSystemFont(ofSize: 20)
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
+        navigationItem.hidesBackButton = true
         
         view.backgroundColor = .white
         
@@ -43,7 +48,7 @@ class homePageViewController: UIViewController {
 //        style: .plain,
 //        target: self,
 //        action: #selector(profileButtonPressed(_:))
-//        
+//
 //        )
         
         let profileButton = UIButton(type: .system)
@@ -68,7 +73,7 @@ class homePageViewController: UIViewController {
         
         stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 90
+        stackView.spacing = 130
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(stackView)
@@ -80,7 +85,7 @@ class homePageViewController: UIViewController {
             
     
 
-        let cameraImage = UIImage(systemName: "livephoto")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        let cameraImage = UIImage(systemName: "livephoto")?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
         let cameraButton = UIButton()
         cameraButton.translatesAutoresizingMaskIntoConstraints = false
         cameraButton.setImage(cameraImage, for: .normal)
@@ -157,8 +162,8 @@ class homePageViewController: UIViewController {
     
     @objc func openCamera(_ sender: UIButton) {
         
-       let opencamera = openVC
-      //  opencamera.switchcamera(to: "front")
+        _ = openVC
+   
       
         navigationController?.pushViewController(openVC, animated: true)
         
@@ -171,43 +176,13 @@ class homePageViewController: UIViewController {
                 select_templateData = Template
             }
             
-          //  let openCamera = openVC
+        
            
         }
         
      
         
-    
-            
-            //        print("zoomLevel",select_templateData.template_config_data.)
-        
-        //        do{
-        //            if let json = select_templateData.template_config_data.data(using: String.Encoding.utf8){
-        //                if let jsonData = try JSONSerialization.jsonObject(with: json, options: .allowFragments) as? [String:AnyObject]{
-        //                  print("zoomLevel",  jsonData["zoomLevel"]?.floatValue ?? Float(0))
-        //
-        //                   // let zoomLevel = ("zoomLevel", jsonData["ZoomLevel"]?.floatValue ?? Float(0))
-        //                    //                    let id = jsonData["zoomLevel"] as! Float
-        //
-        //
-        //                    print("exposureValue", jsonData["exposureValue"]?.floatValue ?? Float(0))
-        //                    //  print(type(of: jsonData["zoomLevel"]?.integerValue ))
-        //
-        //                    //    print(CGFloat(jsonData["zoomLevel"]?.integerValue ?? Int(0) ) )
-        //
-        //
-        //                    let openFilCam = cameraViewController()
-        //                 //   openFilCam.updateZoomFactor(CGFloat(zoomLevel))
-        //
-        //                    navigationController?.pushViewController(openFilCam, animated: true)
-        //
-        //                }
-        //            }
-        //        }catch {
-        //            print(error.localizedDescription)
-        //
-        //        }
-     //   print(select_templateData.template_config_data)
+
       
         if let jsonString =  select_templateData.template_config_data {
             if let jsonData = jsonString.data(using: .utf8) {
@@ -215,14 +190,16 @@ class homePageViewController: UIViewController {
                     let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: [])
                     
                     if let dict = jsonObject as? [String:Any] {
+                      
                         let exposureValue = dict["exposureValue"] as? Float ?? 0.0
-                            print(exposureValue)
+                        print(exposureValue)
                         
                         let zoomLevel = dict["zoomLevel"] as? Double ?? 0.0
-                            print(zoomLevel)
+                        print(zoomLevel)
                         
                         let flashMode = dict["flasMode"] as? Bool
                         print(flashMode as Any)
+                        
                         let focusLevel = dict["focusLevel"] as? Float ?? 0.0
                         print(focusLevel)
                  
@@ -232,7 +209,7 @@ class homePageViewController: UIViewController {
                         let AspectRatio = dict["aspectRatio"]
                         print(AspectRatio as Any)
                         
-                      let cameralens = dict["cameralens"] as? String
+                       let cameralens = dict["cameralens"] as? String
                         print(cameralens as Any)
                         
                         let cameraangle = dict["cameraangle"] as? Double ?? 0.0
@@ -292,10 +269,10 @@ class homePageViewController: UIViewController {
 //                do {
 //                    let templateData = try JSONDecoder().decode(geneData.self, from: responseData)
 //
-//                
-//                    
+//
+//
 //                    let tappedimageIndex = sender.tag
-//                    
+//
 //                    guard tappedimageIndex < templateData.data.count else {
 //                      print("Invalid index")
 //                        return
@@ -305,7 +282,7 @@ class homePageViewController: UIViewController {
         //                    print("Template Config Data: \(tappedImage.template_config_data)")
 //
 //        var json : [ String: Any]
-//        
+//
 //        if let jsonData = tappedImage?.template_config_data.data(using: .utf8),
 //           let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
 //                        print("Zoom Level: \(json["zoomLevel"] as? Float ?? 0)")
@@ -315,18 +292,18 @@ class homePageViewController: UIViewController {
 //                        print("Error parsing template_config_data JSON")
 //                    }
 //
-//                
+//
 //                } catch {
 //                    print("Error decoding JSON: \(error)")
 //                }
 //            }.resume()
-//            
+//
 //            let openFilCam = cameraViewController()
 //        openFilCam.updateZoomFactor(CGFloat((jsonDict["zoomLevel"] as? Float ?? 0)))
             
 //            navigationController?.pushViewController(openFilCam, animated: true)
-//        
-//        
+//
+//
 //        let openVC = cameraViewController()
 //       navigationController?.pushViewController(openVC, animated: true)
     
@@ -463,15 +440,15 @@ class homePageViewController: UIViewController {
                                 profileButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -23),
 
                              
-                                likeButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 8),
-                                likeButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 23),
+                                likeButton.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: 15),
+                                likeButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 35),
 
                               
-                                commentButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -8),
-                                commentButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25),
+                                commentButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -15),
+                                commentButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 35),
 
                                useButton.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-                            useButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 25),
+                            useButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 35),
 
                                                               
                                                  

@@ -3,299 +3,285 @@
 
 import UIKit
 
-class LoginViewController : UIViewController {
+@available(iOS 17.0, *)
+class LoginViewController : UIViewController, UITextFieldDelegate {
     
-    //    let topView: UIView = {
-    //        let view = UIView()
-    //        view.backgroundColor = .systemYellow
-    //        view.translatesAutoresizingMaskIntoConstraints = false
-    //        return view
-    //    }()
-    
-    
-private let imageView: UIImageView = {
+    var scrollView : UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
         
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "launch logo 1024")
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
     }()
     
-//    
- private  let usernameTextField: UITextField = {
+    let headTitle : UILabel = {
+        let label = UILabel()
+        label.text = "G e n e"
+        label.textAlignment = .center
+        label.textColor = .init(red: 1.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        label.font = .preferredFont(forTextStyle: .extraLargeTitle)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+     
         
-     let textField = UITextField(frame: .zero)
-        textField.placeholder = "Username or email"
+    }()
+    
+    let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "U S E R  N A M E :"
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5)
+        label.font = .preferredFont(forTextStyle: .headline)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    let usernameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter your username or Email"
+        //textField.textColor = .white
         textField.borderStyle = .roundedRect
-       // textField.backgroundColor = .systemYellow
+        textField.keyboardAppearance = .light
+        textField.keyboardType = .emailAddress
+        textField.returnKeyType = .default
+        textField.autocorrectionType = .no
+      
+        textField.clearButtonMode = .whileEditing
+        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.borderWidth = 2.5
+        textField.layer.cornerRadius = 10.0
+        textField.backgroundColor = .systemGray5
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.widthAnchor.constraint(equalToConstant: 300).isActive = true // Adjust width as needed
+           textField.heightAnchor.constraint(equalToConstant: 60).isActive = true // Adjust height as needed
         return textField
     }()
-    
-   private let passwordTextField: UITextField = {
+
+    let passwordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "P A S S W O R D :"
+        label.textColor = .init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5)
+        label.textAlignment = .center
         
-       let textField = UITextField(frame: .zero)
-        textField.placeholder = "Password"
-        // textField.isSecureTextEntry = true
-       // textField.backgroundColor = .systemYellow
-        textField.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 15)
+        label.font = .preferredFont(forTextStyle: .headline)
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    let passwordTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter your password"
+        //textField.textColor = .white
+     
+        textField.isSecureTextEntry = true
         textField.borderStyle = .roundedRect
+        textField.layer.borderColor = UIColor.white.cgColor
+        textField.layer.borderWidth = 2.5
+        textField.layer.cornerRadius = 10.0
+        textField.backgroundColor = .systemGray5
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        textField.heightAnchor.constraint(equalToConstant: 60).isActive = true
         return textField
     }()
-    
-   private let loginButton : UIButton = {
-        
+
+    let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Login", for: .normal)
+        button.backgroundColor = .init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.layer.cornerRadius = 15
+        button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 3
-        button.backgroundColor = UIColor.systemYellow
-       button.addTarget(LoginViewController.self, action: #selector(loginButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        button.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return button
+    }()
+
+    
+    let facebookLoginButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "fb")?.resize(targetSize: CGSize(width: 30, height: 30)), for: .normal)
+    
+        
+        button.setTitle("Sign in with facebook", for: .normal)
+        button.setTitleColor(.init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5), for: .normal)
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1.0
+        button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 50, bottom: 15, right: 50)
+        button.layer.borderColor = UIColor.init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5).cgColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    let googleLoginButton: UIButton = {
+        
+        let button = UIButton(type: .custom)
+        
+        button.setImage(UIImage(named: "google")?.resize(targetSize: CGSize(width: 30, height: 30)), for: .normal)
+        button.setTitle("Sign in with google",  for: .normal)
+        button.setTitleColor(.init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5), for: .normal)
+        button.backgroundColor = .black
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1.0
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 60, bottom: 10, right: 60)
+        button.layer.borderColor = UIColor.init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5).cgColor
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-   private let signupButton: UIButton = {
+    let signupButton : UIButton = {
+        
         let button = UIButton(type: .system)
-        button.setTitle("Create new account", for: .normal)
-        button.setTitleColor(.systemYellow, for: .normal)
+        button.setTitle("New User? Create Account.", for: .normal)
+        button.setTitleColor(.init(red: 0.5, green: 1.5, blue: 2.0, alpha: 0.5), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(signupButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(signupButtonpressed), for: .touchUpInside)
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .init(red: 0.3, green: 0.5, blue: 0.5, alpha: 0.7)
-        
-        
-        
-//        view.insertSubview(imageView, at: 0)
-//        NSLayoutConstraint.activate([
-//            imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -320),
-//            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        ])
-//        
-        
-        
-       
-        
-        setupUI()
-    }
-    
-    private func setupUI() {
-        
-        view.backgroundColor = UIColor.black
-        
-        view.addSubview(imageView)
-        view.addSubview(usernameTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(loginButton)
-        view.addSubview(signupButton)
-        
-        let stackview = UIStackView(arrangedSubviews: [usernameTextField, passwordTextField,loginButton,signupButton])
-        stackview.axis = .vertical
-        stackview.spacing = 16
-       // stackview.backgroundColor = .systemBlue
-        stackview.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackview)
-        
-       NSLayoutConstraint.activate([
-            stackview.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            stackview.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackview.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-       
-          imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-        imageView.widthAnchor.constraint(equalToConstant: 120),
-        imageView.heightAnchor.constraint(equalToConstant: 120),
 
-       ])
+        usernameTextField.delegate = self
+        passwordTextField.delegate = self
         
-     
-    }
-    
-    
-    @objc func loginButtonPressed() {
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "launch logo 1024")! )
         
-        //        let validUserName = "1234"
-        //        let validPassword = "1234"
-        //
-        guard let username = usernameTextField.text , let password = passwordTextField.text else {
-            return
-        }
-        //
-        //        if username == validUserName && pasword == validPassword {
-        //            print("Login succesful")
-        //            let view = homePageViewController()
-        //            navigationController?.pushViewController(view, animated: true)
-        //
-        //        } else {
-        //
-        //            print("Invalid username or password. please try again")
-        //        }
+        view.addSubview(headTitle)
         
-        var request = URLRequest(url: URL(string: "http://10.10.101.92:8000/api/puttemplate" )!)
-        request.httpMethod = "POST"
-        let postString = "user_id=\(username)&passwd=\(password)"
-        request.httpBody = postString.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            
-            if let error = error {
-                
-                print("Error: \(error)")
-                return
-            }
-            
-            guard let data = data , let httpResponse = response as? HTTPURLResponse else {
-                print("Inavalid Response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                
-                print("Login Succesful")
-                
-                DispatchQueue.main.async {
-                    let HomePage = homePageViewController()
-                    self.navigationController?.pushViewController(HomePage, animated: true)
-                }
-            }
-            
-        
-            
-        }
-        task.resume()
-    }
-    
-    
-    @objc func signupButtonTapped() {
-        let signupView = signupViewController()
-        navigationController?.pushViewController(signupView, animated: true)
-    }
-}
-//import UIKit
-//
-//class LoginViewController: UIViewController {
-//    
-//    let usernameTextField: UITextField = {
-//        let textField = UITextField()
-//        textField.placeholder = "Username"
-//        textField.borderStyle = .roundedRect
-//      //  textField.backgroundColor = .systemYellow
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        return textField
-//    }()
-//    
-//    let passwordTextField: UITextField = {
-//        let textField = UITextField()
-//        textField.placeholder = "Password"
-//        textField.isSecureTextEntry = true
-//        textField.borderStyle = .roundedRect
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        return textField
-//    }()
-//    
-//    let loginButton: UIButton = {
-////        let button = UIButton(type: .system)
-////        button.setTitle("Login", for: .normal)
-////        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-////        button.translatesAutoresizingMaskIntoConstraints = false
-////        return button
-//        
-//        let button = UIButton(type: .system)
-//                button.setTitle("Login", for: .normal)
-//                button.setTitleColor(.white, for: .normal)
-//                button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-//                button.translatesAutoresizingMaskIntoConstraints = false
-//                button.layer.cornerRadius = 4
-//               button.backgroundColor = .init(red: 0.3, green: 0.44, blue: 0.5, alpha: 0.5)
-//               button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-//                return button
-//    }()
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        
-//        view.backgroundColor = .init(red: 0.3, green: 0.44, blue: 0.5, alpha: 0.5)
-//        
-//        setupSubviews()
-//    }
-//    
-//    func setupSubviews() {
+
+        // Add subviews
+//        view.addSubview(usernameLabel)
 //        view.addSubview(usernameTextField)
+//        view.addSubview(passwordLabel)
 //        view.addSubview(passwordTextField)
 //        view.addSubview(loginButton)
+//        view.addSubview(signupButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(usernameLabel)
+        scrollView.addSubview(usernameTextField)
+        scrollView.addSubview(passwordLabel)
+        scrollView.addSubview(passwordTextField)
+        scrollView.addSubview(loginButton)
+        scrollView.addSubview(signupButton)
+        scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleLoginButton)
+
+        // Add constraints
+        NSLayoutConstraint.activate([
+            
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            headTitle.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 100),
+            headTitle.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            
+            usernameLabel.topAnchor.constraint(equalTo: headTitle.bottomAnchor, constant: 60),
+            usernameLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            
+            usernameTextField.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
+            usernameTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            usernameTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+         
+
+            passwordLabel.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 16),
+            passwordLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+
+            passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 8),
+            passwordTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            passwordTextField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
+            loginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            signupButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 100),
+            signupButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            facebookLoginButton.topAnchor.constraint(equalTo: signupButton.bottomAnchor, constant: 20),
+            facebookLoginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            
+            googleLoginButton.topAnchor.constraint(equalTo: facebookLoginButton.bottomAnchor, constant: 20),
+            googleLoginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+        ])
+        
+        if let storedUsername = UserDefaults.standard.string(forKey: "username"),
+           let storedPassword = UserDefaults.standard.string(forKey: "pasword") {
+            
+            usernameTextField.text = storedPassword
+            passwordTextField.text = storedPassword
+            
+        }
+        
+        func textFieldreturn(_ textfield: UITextField) -> Bool {
+            
+            textfield.resignFirstResponder()
+            return true
+        }
+    }
+    
+   
+
+    @objc func loginButtonTapped(_ sender: UIButton) {
+    // let goto = homePageViewController()
+        let userName = "1234"
+        let password = "1234"
+        
+        guard let enteredUserName = usernameTextField.text , let eneterdPassword = passwordTextField.text else {
+            print("Invalid username or password.please try again")
+            return
+        }
+        
+        if enteredUserName == userName && eneterdPassword == password {
+            //showAlert(message: "Login succesful")
+            
+            UserDefaults.standard.set(enteredUserName, forKey: "username")
+            
+            UserDefaults.standard.set(eneterdPassword, forKey: "password")
+          //  navigationHomepage()
+            let goto = homePageViewController()
+            navigationController?.pushViewController(goto, animated: true)
+           
+        } else {
+        showAlert(message: "Invalid username or password, plaese try again")
+        }
+        
+    }
+    
+//    func navigationHomepage() {
 //        
-//        NSLayoutConstraint.activate([
-//            usernameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-//            usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            
-//            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
-//            passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            
-//            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-//            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
+//        let goto = homePageViewController()
+//        navigationController?.pushViewController(goto, animated: true)
+//       
+//    
 //    }
 //    
-//    @objc func loginButtonTapped() {
-//        // Add your login logic here
-//        // For simplicity, let's just print the entered username and password
-//  guard let username = usernameTextField.text, let password = passwordTextField.text  else{
-//          //  print("Username: \(username), Password: \(password)")
-//      
-//      return
-//        }
-//        
-//                var request = URLRequest(url: URL(string: "http://10.10.101.92:8000/api/puttemplate" )!)
-//                request.httpMethod = "POST"
-//                let postString = "user_id=\(username)&passwd=\(password)"
-//                request.httpBody = postString.data(using: .utf8)
-//                let task = URLSession.shared.dataTask(with: request) {data, response, error in
-//        
-//                    if let error = error {
-//        
-//                        print("Error: \(error)")
-//                        return
-//                    }
-//        
-//                    guard let data = data , let httpResponse = response as? HTTPURLResponse else {
-//                        print("Inavalid Response")
-//                        return
-//                    }
-//        
-//                    if httpResponse.statusCode == 200 {
-//        
-//                        print("Login Succesful")
-//        
-//                        DispatchQueue.main.async {
-//                            let HomePage = homePageViewController()
-//                            self.navigationController?.pushViewController(HomePage, animated: true)
-//                        }
-//                    }
-//        
-//        
-//        
-//                }
-//                task.resume()
-//    }
-//}
+    @objc func signupButtonpressed(_ sender: UIButton) {
+   
+            
+            let goto = signupViewController()
+        goto.modalPresentationStyle = .fullScreen
+ 
+            self.present(goto, animated: true, completion:  nil)
+            
+        
+    }
+    func showAlert(message: String) {
+        let alertController = UIAlertController(title: "Login Status", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
 
-// Usage in AppDelegate or SceneDelegate
-// Uncomment the appropriate line based on your application's entry point
-
-// For AppDelegate:
-// let loginViewController = LoginViewController()
-// window?.rootViewController = loginViewController
-
-// For SceneDelegate:
-// let loginViewController = LoginViewController()
-// window?.rootViewController = UINavigationController(rootViewController: loginViewController)
+}

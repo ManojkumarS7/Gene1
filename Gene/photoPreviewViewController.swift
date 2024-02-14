@@ -4,127 +4,108 @@
 //
 //  Created by manoj on 06/01/24.
 //
-
-import Foundation
 import UIKit
+import Photos
 
-class photoPreviewViewController: UIViewController {
+class photoPreviewViewController : UIView {
+    let imageView = UIImageView()
+    let saveButton = UIButton()
+    let uploadButton = UIButton()
+    let retakeButton = UIButton()
     
-    var imageToDisplay: UIImage?
-    var delegate: photoPreviewDelegate?
-    var statusLabel: UILabel!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.white
         
-//    //    let imageName = "launch logo 1024"
-//        let image = UIImage(named: imageToDisplay)
-//        
-//        let imageView = UIImageView(image: image!)
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.frame = view.bounds
-//        view.addSubview(imageView)
-//        
-        let saveButon = UIButton(type: .system)
-        saveButon.setTitle("Save", for: .normal)
-        saveButon.setTitleColor(.white, for: .normal)
-        saveButon.addTarget(self, action: #selector(savePhotoOnGallery), for: .touchUpInside )
-        saveButon.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(saveButon)
+        imageView.contentMode = .scaleAspectFit
+        addSubview(imageView)
         
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(.black, for: .normal)
+        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        addSubview(saveButton)
         
-        let uploadButton = UIButton(type: .system)
         uploadButton.setTitle("Upload", for: .normal)
-        uploadButton.setTitleColor(.white, for: .normal)
-        uploadButton.addTarget(self, action: #selector(uploadButtonPressed), for: .touchUpInside)
+        uploadButton.setTitleColor(.black, for: .normal)
+        uploadButton.addTarget(self, action: #selector(uploadButtonTapped), for: .touchUpInside)
+        addSubview(uploadButton)
+        
+        retakeButton.setTitle("Retake", for: .normal)
+        retakeButton.addTarget(self, action: #selector(retakeButtonTapped), for: .touchUpInside)
+        addSubview(retakeButton)
+        
+        // Add constraints
+        // Assuming you want buttons at the bottom of the view and imageView to take the remaining space
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
         uploadButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(uploadButton)
-        
-        let backButton = UIButton(type: .system)
-        backButton.setTitle("", for: .normal)
-     //   backButton.addTarget(self, action: #selector (backButtonTapped()), for: .touchUpInside)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(backButton)
+        retakeButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-        
-            saveButon.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            saveButon.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            saveButon.trailingAnchor.constraint(equalTo: uploadButton.leadingAnchor, constant: -20),
-            saveButon.heightAnchor.constraint(equalToConstant: 44),
-        
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-        ])
-        
-        NSLayoutConstraint.activate([
-        
-            uploadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            uploadButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            uploadButton.widthAnchor.constraint(equalTo: saveButon.widthAnchor),
-            uploadButton.heightAnchor.constraint(equalToConstant: 44)
-
-        
-        
-        ])
-        
-        
-        statusLabel = UILabel()
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        statusLabel.textAlignment = .center
-        statusLabel.textColor = .white
-        statusLabel.backgroundColor = UIColor(white: 0, alpha: 0.7)
-        statusLabel.layer.cornerRadius = 10
-        statusLabel.clipsToBounds = true
-        view.addSubview(statusLabel)
-        
-        
-        NSLayoutConstraint.activate([
-        
-            statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            statusLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            statusLabel.widthAnchor.constraint(equalToConstant: 150),
-            statusLabel.heightAnchor.constraint(equalToConstant: 30)
-        
-        
-        
-        ])
-      
-        
-    }
-    
-
-
-    
-    @objc func savePhotoOnGallery() {
-        
-        
+            saveButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            saveButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            saveButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             
-         
-            showStatus("Saved!", duration: 0.5)
+            uploadButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            uploadButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            uploadButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            
+            retakeButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            retakeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            retakeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
+        ])
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+  
+    @objc func saveButtonTapped() {
+        
+        guard let imageToSave = imageView.image else {
+              print("No image to save.")
+              return
+          }
+
+          PHPhotoLibrary.requestAuthorization { status in
+              guard status == .authorized else {
+                  print("Photo library access not authorized.")
+                  return
+              }
+
+              PHPhotoLibrary.shared().performChanges {
+                  PHAssetChangeRequest.creationRequestForAsset(from: imageToSave)
+              } completionHandler: { success, error in
+                  if let error = error {
+                      print("Error saving photo to library: \(error)")
+                  } else {
+                      print("Photo saved to library successfully.")
+                  }
+              }
+          }
         
     }
     
-    @objc func uploadButtonPressed() {
+    @objc func uploadButtonTapped() {
         
-        showStatus("Uploading...", duration: 0.5)
-    }
-    @objc func backButtonTapped() {
+        let upload = cameraViewController()
         
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func showStatus(_ message: String, duration: TimeInterval) {
-        
-        statusLabel.text = message
-        statusLabel.isHidden = false
-        
-        DispatchQueue.main.asyncAfter(deadline: .now()  + duration) {
-            self.statusLabel.isHidden = true
+        guard let image = imageView.image else {
+            print("No image to upload")
+            return
         }
+        upload.uploadImage(image: image)
+    }
+    
+    @objc func retakeButtonTapped() {
+        // Implement retaking action
     }
 }
 
 
-protocol photoPreviewDelegate: AnyObject {
-    func photoPreviewDidSave(_ image: UIImage)
-}
