@@ -6,6 +6,8 @@ import UIKit
 @available(iOS 17.0, *)
 class LoginViewController : UIViewController, UITextFieldDelegate {
     
+    //var authToken : String?
+    
     var scrollView : UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
@@ -228,34 +230,180 @@ class LoginViewController : UIViewController, UITextFieldDelegate {
             return true
         }
     }
-    
-   
-
+ 
     @objc func loginButtonTapped(_ sender: UIButton) {
-    // let goto = homePageViewController()
-        let userName = "1234"
-        let password = "1234"
-        
-        guard let enteredUserName = usernameTextField.text , let eneterdPassword = passwordTextField.text else {
-            print("Invalid username or password.please try again")
+        guard let username = usernameTextField.text, !username.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            showAlert(message: "Please enter username and password")
             return
         }
         
-        if enteredUserName == userName && eneterdPassword == password {
-            //showAlert(message: "Login succesful")
-            
-            UserDefaults.standard.set(enteredUserName, forKey: "username")
-            
-            UserDefaults.standard.set(eneterdPassword, forKey: "password")
-          //  navigationHomepage()
-            let goto = homePageViewController()
-            navigationController?.pushViewController(goto, animated: true)
-           
-        } else {
-        showAlert(message: "Invalid username or password, plaese try again")
+        let parameters: [String: Any] = [
+            "email": username,
+            "passwd": password
+        ]
+        
+        guard let url = URL(string: "http://10.10.101.92:8000/api/login") else {
+            showAlert(message: "Invalid URL")
+            return
         }
         
-    }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch let error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print("Post Request Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid Response Received From the Server")
+                return
+            }
+            
+            if (200...299).contains(httpResponse.statusCode) {
+                        if let data = data, let token = String(data: data, encoding: .utf8) {
+                            print("Token Received: \(token)")
+                            authGlobal.authString = token
+                            UserDefaults.standard.setValue(token, forKey: "AuthToken")
+                            DispatchQueue.main.async {
+                                
+                                let homePage = homePageViewController()
+                                self.navigationController?.pushViewController(homePage, animated: true)
+                            }
+                        } else {
+                            print("Nil data received from the server")
+                        }
+                    } else {
+                        // Display an alert message for incorrect username or password
+                        DispatchQueue.main.async {
+                            self.showAlert(message: "Incorrect username or password")
+                        }
+                    }
+                }
+                task.resume()
+            }
+
+    
+//    @objc func loginButtonTapped(_ sender: UIButton) {
+//        guard let username = usernameTextField.text, !username.isEmpty,
+//              let password = passwordTextField.text, !password.isEmpty else {
+//            showAlert(message: "Please enter username and password")
+//            return
+//        }
+//        
+//        // Construct URL with query parameters
+//        //        var components = URLComponents(string:"http://10.10.101.92:8000/api/login")
+//        //   var components = URLComponents(string:"http://127.0.0.1:8000/api/login")
+//        
+//        let parameters : [String: Any] = [
+//            
+//            
+//            "email" : username,
+//            "passwd" : password,
+//            
+//        ]
+//        
+//        //        guard let url = components?.url else {
+//        //            showAlert(message: "Invalid URL")
+//        //            return
+//        //        }
+//        
+//        let url = URL(string: "http://127.0.0.1:8000/api/login")
+//        var request = URLRequest(url: url!)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        do {
+//            
+//            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+//            
+//        } catch let erorr{
+//            
+//            print(erorr.localizedDescription)
+//            return
+//        }
+//        
+//        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
+//            guard let self = self else { return }
+//            guard let data = data, let response = response as? HTTPURLResponse, error == nil else {
+//                self.showAlert(message: "Error: \(error?.localizedDescription ?? "Unknown error")")
+//                return
+//            }
+//            
+//            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+//                
+//                print("Invalid Resoponse Recived From the Server")
+//                return
+//            }
+//            
+//            
+//            
+//            do {
+//                
+//                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+//                
+//            } catch let erorr{
+//                
+//                print(erorr.localizedDescription)
+//                return
+//            }
+//            
+//            let task = URLSession.shared.dataTask(with: request) { [self] ( data, response, error) in
+//                if let error = error {
+//                    
+//                    print("Post Requset Error: \(error.localizedDescription)")
+//                    return
+//                }
+//                
+//                guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+//                    
+//                    print("Invalid Resoponse Recived From the Server")
+//                    return
+//                }
+//                
+//                if let data = data , let token = String(data: data, encoding: .utf8) {
+//                    print("Token recived : \(token)")
+//                    
+//                    UserDefaults.standard.setValue(token, forKey: "AuthToken")
+//                    
+//                    
+//                    var authenticatedRequest = URLRequest(url: url!)
+//                    authenticatedRequest.httpMethod = "GET"
+//                    authenticatedRequest.setValue(token, forHTTPHeaderField: "Authorization")
+//                  
+//                    DispatchQueue.main.async {
+//                        
+//             let homePage = homePageViewController()
+//                        self.present(homePage, animated: true)
+//                    }
+//                } else {
+//                    print("nil data recived from the server")
+//                    
+//                    
+//                    
+//                }
+//                
+//            }
+//            task.resume()
+//        }
+//    }
+//        let homeViewController = homePageViewController()
+//        homeViewController.authToken = token
+//        homeViewController.modalPresentationStyle = .fullScreen
+//        present(homeViewController, animated: true, completion: nil)
+ 
+ 
     
 //    func navigationHomepage() {
 //        
@@ -269,19 +417,21 @@ class LoginViewController : UIViewController, UITextFieldDelegate {
    
             
             let goto = signupViewController()
-        goto.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(goto, animated: true)
  
-            self.present(goto, animated: true, completion:  nil)
+          //  self.present(goto, animated: true, completion:  nil)
             
         
     }
     func showAlert(message: String) {
-        let alertController = UIAlertController(title: "Login Status", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
-    
+
     
 
 }

@@ -13,6 +13,8 @@ import UIKit
 //
 @available(iOS 16.0, *)
 class homePageViewController: UIViewController {
+    
+    var authToken: String!
     var scrollView: UIScrollView!
     var stackView: UIStackView!
 
@@ -32,7 +34,7 @@ class homePageViewController: UIViewController {
     
         
         let titleAttributes : [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.yellow,
+            .foregroundColor: UIColor.init(red: 1.5, green: 0.5, blue: 0.5, alpha: 3.5),
             .font: UIFont.boldSystemFont(ofSize: 20)
         ]
         navigationController?.navigationBar.titleTextAttributes = titleAttributes
@@ -47,7 +49,7 @@ class homePageViewController: UIViewController {
 //        title: "Profile",
 //        style: .plain,
 //        target: self,
-//        action: #selector(profileButtonPressed(_:))
+//        action: #selector(profileButtonPressed(_:)
 //
 //        )
         
@@ -85,7 +87,7 @@ class homePageViewController: UIViewController {
             
     
 
-        let cameraImage = UIImage(systemName: "livephoto")?.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        let cameraImage = UIImage(systemName: "plus.app.fill")?.withTintColor(.init(red: 1.5, green: 0.5, blue: 0.5, alpha: 3.5), renderingMode: .alwaysOriginal)
         let cameraButton = UIButton()
         cameraButton.translatesAutoresizingMaskIntoConstraints = false
         cameraButton.setImage(cameraImage, for: .normal)
@@ -96,7 +98,7 @@ class homePageViewController: UIViewController {
                
                NSLayoutConstraint.activate([
                    cameraButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                   cameraButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+                   cameraButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
                    cameraButton.widthAnchor.constraint(equalToConstant: 40),
                    cameraButton.heightAnchor.constraint(equalTo: cameraButton.widthAnchor),
                    
@@ -145,7 +147,7 @@ class homePageViewController: UIViewController {
     
     @objc func profileButtonPressed(_ sender: UIButton) {
               // Create and present the profile details view controller
-              let profileDetailsVC = ProfileDetailsViewController() // Replace with the actual view controller for profile details
+              let profileDetailsVC = profileViewController() // Replace with the actual view controller for profile details
               profileDetailsVC.modalPresentationStyle = .overFullScreen
               present(profileDetailsVC, animated: true, completion: nil)
           }
@@ -164,7 +166,6 @@ class homePageViewController: UIViewController {
         
         _ = openVC
    
-      
         navigationController?.pushViewController(openVC, animated: true)
         
     }
@@ -312,23 +313,37 @@ class homePageViewController: UIViewController {
     
     func fetchData() {
        
-        let apiUrl = "http://10.10.101.92:8000/api/gettemplate"
+        let apiUrl = "http://127.0.0.1:8000/api/gettemplate"
         
-       
-        URLSession.shared.dataTask(with: URL(string: apiUrl)!) {[weak self ] data, _, error in
+//        let apiUrl = "http://10.10.101.92:8000/api/gettemplate"
+        var request = URLRequest(url: URL(string: apiUrl)!)
+       // request.httpMethod = "GET"
+      
+        
+       // if let authToken = UserDefaults.standard.string(forKey: "AuthToken") {
+            
+     //   print(authToken!)
+       // request.addValue("gAAAAABlxb6b1BdS8ioeqzHNFESxuXIaJNs6b4WoTH6AvKq9BYA8rCTccPSQDMu_jRz4FlSPSazk7kUGmCU3Q3gjA_IeINhggjgoPiAtzH_dXIjh4zPOxSVGOpZ8E6wt8G9lHQTIJdjihHNg6GnL5gLl0DShmmzBEg==", forHTTPHeaderField: "Authorization")
+        let authToken =  "gAAAAABlxb6b1BdS8ioeqzHNFESxuXIaJNs6b4WoTH6AvKq9BYA8rCTccPSQDMu_jRz4FlSPSazk7kUGmCU3Q3gjA_IeINhggjgoPiAtzH_dXIjh4zPOxSVGOpZ8E6wt8G9lHQTIJdjihHNg6GnL5gLl0DShmmzBEg=="
+//   
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+      
+    let task =    URLSession.shared.dataTask(with: request) {[weak self ] data, _, error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
                 return
             }
             
+            
  
             if let data = data {
+                print(String(data: data, encoding: .utf8) ?? "Data Could not be printed as UTF-8")
                 do {
                     let decoder = JSONDecoder()
                     let geneData = try decoder.decode(geneData.self, from: data)
                     self!.templateData = geneData
                  
-                    
+                print(geneData)
      
                     DispatchQueue.main.async {
                         self!.processFetchedData(geneData)
@@ -339,7 +354,8 @@ class homePageViewController: UIViewController {
                     print("Error decoding JSON: \(error.localizedDescription)")
                 }
             }
-        }.resume()
+        }
+        task.resume()
     }
     
     
@@ -352,8 +368,16 @@ class homePageViewController: UIViewController {
             imageView.translatesAutoresizingMaskIntoConstraints = false
             
 
-            if let imageUrl = URL(string: userData.thumpnail_url) {
-                URLSession.shared.dataTask(with: imageUrl) { [weak self, imageView, userData] imageData, _, error in
+
+            if let imageUrl = URL(string: userData.thumpnail_url){
+                
+                var requset = URLRequest(url: imageUrl)
+                
+                let authToken =  "gAAAAABlxb6b1BdS8ioeqzHNFESxuXIaJNs6b4WoTH6AvKq9BYA8rCTccPSQDMu_jRz4FlSPSazk7kUGmCU3Q3gjA_IeINhggjgoPiAtzH_dXIjh4zPOxSVGOpZ8E6wt8G9lHQTIJdjihHNg6GnL5gLl0DShmmzBEg=="
+           
+                requset.addValue(authToken, forHTTPHeaderField: "Authorization")
+                
+                URLSession.shared.dataTask(with: requset) { [weak self, imageView, userData] imageData, _, error in
                     guard let self = self else { return }
                     
                     if let error = error {
@@ -362,8 +386,15 @@ class homePageViewController: UIViewController {
                     }
                     
                 
-                    if let imageData = imageData, let image = UIImage(data: imageData) {
-                        DispatchQueue.main.async { [self]  in
+                    guard let imageData = imageData else {
+                        print("No Image Data")
+                        return
+                    }
+                    
+                    print("Recived image data:\(imageData)")
+                    
+                        if let image = UIImage(data: imageData) {
+                        DispatchQueue.main.async { //[self]  in
                             imageView.image = image
                  
                             self.stackView.addArrangedSubview(imageView)
@@ -468,17 +499,22 @@ class homePageViewController: UIViewController {
 
                             
                         }
-                    }
+                        } else {
+                            print("Failed to create UIImage from data")
+                        }
                 }.resume()
                 
                 
                 
                 
                 
+            } else {
+                
+                print("Invalid image url :\(userData.thumpnail_url)")
             }
         }
     }
     
-  
+
   
 }

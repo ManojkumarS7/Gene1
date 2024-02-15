@@ -12,6 +12,8 @@
 		AF38E1602B4923940035F4FB /* photoPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */; };
 		AF38E1622B4D6A9E0035F4FB /* LoginViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E1612B4D6A9E0035F4FB /* LoginViewContoller.swift */; };
 		AF38E1642B4D6F630035F4FB /* signupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF38E1632B4D6F630035F4FB /* signupViewController.swift */; };
+		AF3E10162B7CB545004A7FA6 /* editProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3E10152B7CB545004A7FA6 /* editProfileViewController.swift */; };
+		AF3E10182B7CDCD9004A7FA6 /* underlinetext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3E10172B7CDCD9004A7FA6 /* underlinetext.swift */; };
 		AFA431232B2C3D9300B1B376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431222B2C3D9300B1B376 /* AppDelegate.swift */; };
 		AFA431252B2C3D9300B1B376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431242B2C3D9300B1B376 /* SceneDelegate.swift */; };
 		AFA431272B2C3D9300B1B376 /* cameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431262B2C3D9300B1B376 /* cameraViewController.swift */; };
@@ -21,6 +23,7 @@
 		AFA431552B2C400400B1B376 /* geneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA431542B2C400400B1B376 /* geneData.swift */; };
 		AFB5CBA92B3D846800E01054 /* profileDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB5CBA82B3D846800E01054 /* profileDetails.swift */; };
 		AFCA79A32B7357BF00D2C19C /* usersignModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFCA79A12B7357BF00D2C19C /* usersignModel.xcdatamodeld */; };
+		AFD03A692B777C3A00617ADF /* authGlobal.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD03A682B777C3A00617ADF /* authGlobal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,8 @@
 		AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoPreviewViewController.swift; sourceTree = "<group>"; };
 		AF38E1612B4D6A9E0035F4FB /* LoginViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewContoller.swift; sourceTree = "<group>"; };
 		AF38E1632B4D6F630035F4FB /* signupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signupViewController.swift; sourceTree = "<group>"; };
+		AF3E10152B7CB545004A7FA6 /* editProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editProfileViewController.swift; sourceTree = "<group>"; };
+		AF3E10172B7CDCD9004A7FA6 /* underlinetext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = underlinetext.swift; sourceTree = "<group>"; };
 		AFA4311F2B2C3D9300B1B376 /* Gene.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gene.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFA431222B2C3D9300B1B376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AFA431242B2C3D9300B1B376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +45,7 @@
 		AFA431542B2C400400B1B376 /* geneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = geneData.swift; sourceTree = "<group>"; };
 		AFB5CBA82B3D846800E01054 /* profileDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileDetails.swift; sourceTree = "<group>"; };
 		AFCA79A22B7357BF00D2C19C /* usersignModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = usersignModel.xcdatamodel; sourceTree = "<group>"; };
+		AFD03A682B777C3A00617ADF /* authGlobal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authGlobal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +88,10 @@
 				AFA431262B2C3D9300B1B376 /* cameraViewController.swift */,
 				AF38E15F2B4923940035F4FB /* photoPreviewViewController.swift */,
 				AFB5CBA82B3D846800E01054 /* profileDetails.swift */,
+				AF3E10152B7CB545004A7FA6 /* editProfileViewController.swift */,
+				AF3E10172B7CDCD9004A7FA6 /* underlinetext.swift */,
 				AFA431542B2C400400B1B376 /* geneData.swift */,
+				AFD03A682B777C3A00617ADF /* authGlobal.swift */,
 				AFA4312B2B2C3D9400B1B376 /* Assets.xcassets */,
 				AFA4312D2B2C3D9400B1B376 /* LaunchScreen.storyboard */,
 				AFA431302B2C3D9400B1B376 /* Info.plist */,
@@ -163,6 +172,8 @@
 			files = (
 				AFA431532B2C3FAF00B1B376 /* homePageViewController.swift in Sources */,
 				AF38E1622B4D6A9E0035F4FB /* LoginViewContoller.swift in Sources */,
+				AF3E10182B7CDCD9004A7FA6 /* underlinetext.swift in Sources */,
+				AF3E10162B7CB545004A7FA6 /* editProfileViewController.swift in Sources */,
 				AFA431272B2C3D9300B1B376 /* cameraViewController.swift in Sources */,
 				AF0AC2D02B6D13880075890D /* CustomImageCell.swift in Sources */,
 				AFA431552B2C400400B1B376 /* geneData.swift in Sources */,
@@ -170,6 +181,7 @@
 				AF0AC2CE2B6CD2ED0075890D /* HomePage.swift in Sources */,
 				AFA431232B2C3D9300B1B376 /* AppDelegate.swift in Sources */,
 				AFB5CBA92B3D846800E01054 /* profileDetails.swift in Sources */,
+				AFD03A692B777C3A00617ADF /* authGlobal.swift in Sources */,
 				AF38E1602B4923940035F4FB /* photoPreviewViewController.swift in Sources */,
 				AFA431252B2C3D9300B1B376 /* SceneDelegate.swift in Sources */,
 				AFCA79A32B7357BF00D2C19C /* usersignModel.xcdatamodeld in Sources */,

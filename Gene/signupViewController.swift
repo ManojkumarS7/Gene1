@@ -381,6 +381,7 @@ class signupViewController: UIViewController {
                 ]
                 
                 let url = URL(string:"http://10.10.101.92:8000/api/signup")
+      //  let url = URL(string:"http://127.0.0.1:8000/api/signup")
                 var request = URLRequest(url: url!)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -414,15 +415,22 @@ class signupViewController: UIViewController {
                     
                     if let data = data , let token = String(data: data, encoding: .utf8) {
                         print("Token recived : \(token)")
-                        
-                        
+                        authGlobal.authString = token
+                        UserDefaults.standard.setValue(token, forKey: "AuthToken")
                         
         
                         var authenticatedRequest = URLRequest(url: url!)
                         authenticatedRequest.httpMethod = "GET"
-                        authenticatedRequest.setValue("Bearer\(token)", forHTTPHeaderField: "Authorization")
-                        
-                
+                        authenticatedRequest.setValue(token, forHTTPHeaderField: "Authorization")
+                        DispatchQueue.main.async {
+                            
+                            
+                            let homeViewController = homePageViewController()
+                           // homeViewController.authToken = token
+                            
+                         //   homeViewController.modalPresentationStyle = .fullScreen
+                            navigationController?.pushViewController(homeViewController, animated: true)
+                        }
                     } else {
                         print("nil data recived from the server")
                         
@@ -430,9 +438,10 @@ class signupViewController: UIViewController {
             
                 }
                 task.resume()
-        let homeViewController = homePageViewController()
-        homeViewController.modalPresentationStyle = .fullScreen
-        present(homeViewController, animated: true, completion: nil)
+//        let homeViewController = homePageViewController()
+//        homeViewController.authToken = token
+//        homeViewController.modalPresentationStyle = .fullScreen
+//        present(homeViewController, animated: true, completion: nil)
     }
     
     

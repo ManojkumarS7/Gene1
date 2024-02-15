@@ -704,13 +704,13 @@ class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGe
                
             
         
-             //  savePhotoToLibrary(image)
-                  // uploadImage(image: image)
+               savePhotoToLibrary(image)
+                   uploadImage(image: image)
                    // capturedImage = image
                     
-               let preview = photoPreviewViewController(frame: view.bounds)
-               preview.imageView.image = image
-               view.addSubview(preview)
+//               let preview = photoPreviewViewController(frame: view.bounds)
+//               preview.imageView.image = image
+//               view.addSubview(preview)
                 
                }
            
@@ -718,53 +718,53 @@ class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGe
        
             
             
-            //func savePhotoToLibrary(_ image: UIImage) {
-//
-//        
-//        
-//        //        let currentAspectRatio: AVCaptureSession.Preset = captureSession.sessionPreset
-//        //        let aspectRatioString = aspectRatioString(for: currentAspectRatio)
-//        //        print("Aspect Ratio Used: \(aspectRatioString)")
-//        //
-//        
-//     
-//            
-//            _ = AVCapturePhotoSettings()
-//            PHPhotoLibrary.requestAuthorization { status in
-//                guard status == .authorized else {
-//                    print("Photo library access not authorized.")
-//                    return
-//                }
-//                
-//                PHPhotoLibrary.shared().performChanges {
-//                    PHAssetChangeRequest.creationRequestForAsset(from: image)
-//                } completionHandler: { [self] success, error in
-//                    if let error = error {
-//                        print("Error saving photo to library: \(error)")
-//                    } else {
-//                        print("Photo saved to library successfully.")
-//                        print("Zoom Level: \(self.currentZoomFactor)")
-//                        print("Exposure Value: \(currentExposureValue)")
-//                        print("Focus Level: \(currentFocusLevel)")
-//                        print ("Flash mode :\( isFlashOn)")
-//                        print("Timer:\(timerDuration)")
-//                        print("Aspect Ratio :\(selectedAspectRatio)")
-//                        //print("Camera angle :\(selectedAngle)")
-//                        print(selectedlens)
-//                        //print(currentCamerPosition)
-//                        print("currentCamera:\(positionString)")
-//                        
-//                        //   print(positionString!)
-//                        // let finalAngle = (360.0 - yawAngle).truncatingRemainder(dividingBy: 360.0)
-//                        //print("Final Angle Of Picture: \(roll)")
-//                        
-//                        
-//                        
-//                    }
-//                }
-//            }
-//        }
-// 
+            func savePhotoToLibrary(_ image: UIImage) {
+
+        
+        
+        //        let currentAspectRatio: AVCaptureSession.Preset = captureSession.sessionPreset
+        //        let aspectRatioString = aspectRatioString(for: currentAspectRatio)
+        //        print("Aspect Ratio Used: \(aspectRatioString)")
+        //
+        
+     
+            
+            _ = AVCapturePhotoSettings()
+            PHPhotoLibrary.requestAuthorization { status in
+                guard status == .authorized else {
+                    print("Photo library access not authorized.")
+                    return
+                }
+                
+                PHPhotoLibrary.shared().performChanges {
+                    PHAssetChangeRequest.creationRequestForAsset(from: image)
+                } completionHandler: { [self] success, error in
+                    if let error = error {
+                        print("Error saving photo to library: \(error)")
+                    } else {
+                        print("Photo saved to library successfully.")
+                        print("Zoom Level: \(self.currentZoomFactor)")
+                        print("Exposure Value: \(currentExposureValue)")
+                        print("Focus Level: \(currentFocusLevel)")
+                        print ("Flash mode :\( isFlashOn)")
+                        print("Timer:\(timerDuration)")
+                        print("Aspect Ratio :\(selectedAspectRatio)")
+                        //print("Camera angle :\(selectedAngle)")
+                        print(selectedlens)
+                        //print(currentCamerPosition)
+                        print("currentCamera:\(positionString)")
+                        
+                        //   print(positionString!)
+                        // let finalAngle = (360.0 - yawAngle).truncatingRemainder(dividingBy: 360.0)
+                        //print("Final Angle Of Picture: \(roll)")
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+ 
     @objc func flashButtonPressed(_ sender: UIButton) {
         
         isFlashOn = !isFlashOn
@@ -1552,7 +1552,11 @@ class cameraViewController : UIViewController,AVCapturePhotoCaptureDelegate,UIGe
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
+        
+        let authToken = "gAAAAABlx0wucQVJU6sob0_gyErXrwShtcmhgwlZ8cLBfRrI8HpFfgSvYX4x78wGS4yNC_XtrM2E8I31Tm3m4XBvc5w9ppmSFc82L79C_NYSjbePylr7ne9fGd-OltLVSA6WHfLkCan_BcBIvpioHjFmzB_FWgpgXg=="
+        
+        request.setValue(authToken, forHTTPHeaderField: "Authorization")
+     
         var data = Data()
 
         // Add the image data to the raw http request data

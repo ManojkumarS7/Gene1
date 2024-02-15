@@ -19,6 +19,16 @@ struct geneUserData: Decodable {
 
 }
  
+
+struct User {
+    
+    
+    let userName : String
+    let following: Int
+    let followers: Int
+  //  let postCount : Int
+    let posts: [String]
+}
 //struct TemplateConfig : Decodable {
 //    
 //    var zoomLevel : Double!
